@@ -1,0 +1,64 @@
+Stage 1 : data preprocessing 
+1. Downloaded the dataset 
+
+2. preprocess.py : this file has all the functions for cleaning and turning the raw transactions data into model ready features ; exact same transformations during the  training and 
+the inferencing should be used 
+
+3. feature_defs.yml : a canonical list of features (names, types, description, default values); acts as the contract between training and inferencing teams; useful when new features are 
+added or when feature drift happens. (Feature drift (sometimes called data drift) happens when the statistical properties of your input features change over time compared to the data the model was trained on.)
+
+4. transactions_raw.csv : the original dataset  downloaded from Kaggle for now, but a company's internal dataset could be used 
+
+5. transactions_processed.csv : the output of your preprocessing pipeline — clean, feature-engineered table ready for training
+
+6. generate_synthetic.py :  a script that creates fake transactions (with a controllable fraud rate, timestamps, etc.).
+ -- Implementation Details
+    The script implements:
+    A TransactionGenerator class that manages user profiles, merchant profiles, and transaction generation
+    PCA-like feature generation for V1-V28 features that mimic real credit card transaction data
+    Temporal patterns to simulate realistic transaction timing throughout the day and week
+    CSV output compatible with the format used in your preprocessing code
+    Additional JSON output with extended fields for debugging and analysis
+    Sample API payload generate
+
+step 2: exploratory analysis 
+
+1. exploratory.ipynb : In this exploratory notebook, the purpose is to:
+
+Show the entire data processing pipeline from start to finish
+Demonstrate how the raw data is transformed into processed data
+Document the preprocessing steps for transparency and reproducibility
+Allow you to understand what transformations are being applied
+
+step 3 : Model Training
+Load data/processed/transactions_processed.csv.
+
+Split train/validation/test.
+
+Train model (LightGBM/XGBoost recommended).
+
+Evaluate metrics: ROC-AUC, PR-AUC, precision, recall, false positive rate.
+
+Save trained model to models_store/v1/fraud_v1.pkl.
+
+Optionally, create evaluation plots and save model-card metadata.
+
+
+step 3: Model traning 
+ 1. first model traning resulted in bad result due to class imbalance hence --undersample-ratio was changed to 0.05
+ 2. After the change we had : 
+ Interpretation
+These results are excellent for a fraud detection system:
+
+High Recall (0.8316): over 83% of all fraudulent transactions, which is critical for fraud detection where missing fraud is costly.
+
+Good Precision (0.6371): About 64% of transactions you flag as fraudulent are actually fraudulent, which is reasonably good for fraud detection. This means your false positive rate is manageable.
+
+Very Low False Positive Rate (0.0008): This is particularly important for fraud detection systems, as false positives lead to customer friction and operational costs.
+
+Excellent ROC-AUC (0.9821): Shows the model has strong discriminative ability.
+
+Strong PR-AUC (0.7520): Indicates the model performs well even with class imbalance.
+
+
+

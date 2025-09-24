@@ -1,0 +1,80 @@
+# Fraud Detection Model Hyperparameters
+
+# LightGBM Parameters
+lightgbm:
+  # Core Parameters
+  objective: "binary"  # Binary classification task
+  metric: "auc"        # Metric for evaluation
+  boosting_type: "gbdt" # Gradient Boosting Decision Tree
+  
+  # Learning Control Parameters
+  learning_rate: 0.01  # Small learning rate for better generalization
+  n_estimators: 500    # Number of boosting iterations
+  max_depth: 7         # Maximum tree depth for base learners
+  num_leaves: 31       # Maximum tree leaves for base learners
+  
+  # Regularization Parameters
+  min_child_samples: 20 # Minimum number of data points needed in a leaf
+  min_child_weight: 0.001 # Minimum sum hessian in one leaf
+  reg_alpha: 0.1       # L1 regularization term on weights
+  reg_lambda: 1.0      # L2 regularization term on weights
+  subsample: 0.8       # Subsample ratio of the training instance
+  colsample_bytree: 0.8 # Subsample ratio of columns when constructing each tree
+  
+  # Efficiency Parameters
+  n_jobs: -1           # Number of parallel threads, -1 means using all
+  verbose: -1          # Verbosity level (negative for silent)
+  
+  # Class Imbalance Parameters
+  # These are especially important for fraud detection which typically has 
+  # heavily imbalanced class distributions
+  is_unbalance: false  # Set to true to use auto-balanced weights for classes
+  scale_pos_weight: 50 # Manual control of class weights (adjust based on your data)
+
+# Training Parameters
+training:
+  test_size: 0.2       # Proportion of data to use for testing
+  random_state: 42     # Random seed for reproducibility
+  stratify: true       # Whether to stratify the split by target class
+  
+# Preprocessing Parameters
+preprocessing:
+  scale_features: true  # Whether to scale numeric features
+  scaler_type: "standard" # Type of scaler (standard, minmax, robust)
+  handle_missing: true  # Whether to handle missing values
+  missing_strategy: "median" # Strategy for filling missing values
+  remove_outliers: false # Whether to remove outliers
+  outlier_method: "iqr" # Method for outlier detection (iqr, zscore)
+  
+# Feature Engineering Parameters
+feature_engineering:
+  # Specify feature transformations
+  apply_log_transform: 
+    - "Amount"  # Apply log transform to Amount column
+  
+  # Feature interaction parameters
+  create_polynomial_features: false # Whether to create polynomial features
+  polynomial_degree: 2 # Degree of polynomial features
+  
+  # Feature selection parameters
+  feature_selection: true # Whether to perform feature selection
+  selection_method: "importance" # Method for feature selection (importance, correlation, etc.)
+  max_features: 30 # Maximum number of features to select
+
+# Evaluation Parameters
+evaluation:
+  # Classification threshold parameters
+  default_threshold: 0.5 # Default threshold for classification
+  threshold_search: true # Whether to search for optimal threshold
+  
+  # Cross-validation parameters
+  cv_folds: 5 # Number of folds for cross-validation
+  
+  # Metrics to calculate
+  metrics:
+    - "accuracy"
+    - "precision" 
+    - "recall"
+    - "f1"
+    - "auc"
+    - "average_precision"

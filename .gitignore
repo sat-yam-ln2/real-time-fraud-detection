@@ -1,0 +1,145 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.env
+.venv
+env.bak/
+venv.bak/
+fd-env/
+.conda/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb_metadata
+
+# Data files
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+data/sample_payloads/*
+!data/sample_payloads/sample_payload.json
+
+# Model files
+models_store/*
+!models_store/registry.json
+!models_store/.gitkeep
+!models_store/v1/.gitkeep
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.vs/
+.spyderproject
+.spyproject
+.ropeproject
+.projectile
+*.sublime-project
+*.sublime-workspace
+.tm_properties
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Secrets and configuration
+*.env
+*.ini
+config.json
+credentials.json
+secrets.yaml
+secrets.yml
+secrets/
+.credentials/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.bak
+*.swp
+
+# Docker
+.docker/
+docker-compose.override.yml
+Dockerfile.local
+
+# Monitoring artifacts
+prometheus_data/
+grafana_data/
+.prometheus
+.grafana
+
+# Documentation builds
+docs/_build/
+docs/api/
+site/
+
+# Deployment files
+deploy/keys/
+deploy/secrets/
+deploy/.terraform/
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# Local development configuration
+.local/
+.local_config/
+
+# Profiling results
+*.prof
+profile_results/

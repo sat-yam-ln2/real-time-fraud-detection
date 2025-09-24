@@ -1,0 +1,125 @@
+# Feature Definitions for Fraud Detection System
+# This file serves as the canonical reference for all features used in both offline and online processing
+
+# Input Feature Definitions
+input_features:
+  # Transaction Time
+  - name: Time
+    type: numeric
+    description: Number of seconds elapsed between this transaction and first transaction in the dataset
+    required: true
+    transformations: ['normalize', 'cyclical_encoding']
+  
+  # Anonymous Features (V1-V28)
+  - name: V1-V28
+    type: numeric
+    description: Anonymized features from PCA transformation
+    required: true
+    transformations: ['impute_median', 'normalize']
+    
+  # Transaction Amount
+  - name: Amount
+    type: numeric
+    description: Transaction amount in currency units
+    required: true
+    transformations: ['log_transform', 'normalize']
+    
+  # Class Label (Target)
+  - name: Class
+    type: categorical
+    description: Class of transaction (1 for fraud, 0 for normal)
+    required: true
+    is_target: true
+
+# Engineered Feature Definitions
+engineered_features:
+  # Time-based Features
+  - name: hour_of_day
+    type: categorical
+    description: Hour of day extracted from transaction time
+    source: Time
+    transformations: ['one_hot_encode']
+    
+  - name: day_of_week
+    type: categorical
+    description: Day of week extracted from transaction time
+    source: Time
+    transformations: ['one_hot_encode']
+    
+  - name: is_weekend
+    type: boolean
+    description: Boolean indicating if transaction occurred on weekend
+    source: Time
+    
+  # Amount-based Features
+  - name: amount_scaled
+    type: numeric
+    description: Log-transformed and scaled transaction amount
+    source: Amount
+    transformations: ['log_transform', 'normalize']
+    
+  # User Aggregated Features
+  - name: user_avg_amount
+    type: numeric
+    description: Average transaction amount per user (rolling window)
+    source: Amount
+    aggregation: 'mean'
+    window: '24h'
+    
+  - name: user_tx_count
+    type: numeric
+    description: Count of transactions per user (rolling window)
+    aggregation: 'count'
+    window: '24h'
+    
+  - name: user_amount_std
+    type: numeric
+    description: Standard deviation of transaction amounts per user
+    source: Amount
+    aggregation: 'std'
+    window: '24h'
+    
+  # Transaction Velocity Features
+  - name: tx_velocity_1h
+    type: numeric
+    description: Number of transactions in past hour
+    aggregation: 'count'
+    window: '1h'
+    
+  # Merchant Features
+  - name: merchant_category
+    type: categorical
+    description: Categorical encoding of merchant type
+    transformations: ['hash_encoding']
+    
+  - name: merchant_risk_score
+    type: numeric
+    description: Risk score associated with merchant
+    
+# Feature Group Definitions
+feature_groups:
+  basic:
+    - Time
+    - V1-V28
+    - Amount
+  
+  time_features:
+    - hour_of_day
+    - day_of_week
+    - is_weekend
+  
+  user_aggregates:
+    - user_avg_amount
+    - user_tx_count
+    - user_amount_std
+    
+  merchant_features:
+    - merchant_category
+    - merchant_risk_score
+
+# Model Input Features
+model_features:
+  - basic
+  - time_features
+  - user_aggregates
+  - merchant_features
